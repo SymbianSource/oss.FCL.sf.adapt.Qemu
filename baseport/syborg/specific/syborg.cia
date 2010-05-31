@@ -51,25 +51,3 @@ EXPORT_C void __NAKED__ TSyborg::ClearTimerInt(TUint /*aTimerBase*/)
     asm("bx lr");
 }
 
-//
-//Interrupt Controller Acces Functions
-//
-
-// Enable specified motherboard Int on either the PIC/SIC
-EXPORT_C void __NAKED__ TSyborg::EnableInt(TUint /*anId*/)
-{
-  asm("ldr r1, __KHwInt");
-  asm("str r0, [r1, #20]");
-  asm("bx lr");
-}
-
-// Disable specified motherboard Int on either the PIC/SIC
-EXPORT_C void __NAKED__ TSyborg::DisableInt(TUint /*anId*/)
-{
-  asm("ldr r1, __KHwInt");
-  asm("str r0, [r1, #16]");
-  asm("bx lr");
-	
-	asm("__KHwInt:");
-	asm(".word %a0" : : "i" (TInt)(KHwBaseSic));
-}

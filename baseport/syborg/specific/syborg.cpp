@@ -128,3 +128,18 @@ EXPORT_C TPhysAddr TSyborg::VideoRamPhysSecure()
   return 0;
 }
 
+//
+//Interrupt Controller Acces Functions
+//
+
+// Enable specified motherboard Int on either the PIC/SIC
+EXPORT_C void TSyborg::EnableInt(TUint anId)
+{
+   WriteReg(KHwBaseSic, 5, anId);
+}
+
+// Disable specified motherboard Int on either the PIC/SIC
+EXPORT_C void TSyborg::DisableInt(TUint anId)
+{
+   WriteReg(KHwBaseSic, 4, anId);
+}

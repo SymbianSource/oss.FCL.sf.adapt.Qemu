@@ -50,16 +50,13 @@ __NAKED__ void SyborgWFIIdle()
 __NAKED__ void SyborgInterrupt::MsTimerTick(TAny* /*aPtr*/)
 {
 	// Service 1ms tick interrupt
-	asm("ldr r1, __KHwCounterTimer");
+	asm("ldr r1, =KHwCounterTimer");
 	asm("push {r0}");
 	asm("mov r0, #1");
 	asm("str r0, [r1, #24]");
 	asm("pop {r0}");
 	asm("b "CSM_ZN7NTimerQ4TickEv);
 	asm("bx lr");
-
-	asm("__KHwCounterTimer:");
-	asm(".word %a0" : : "i" ((TInt)KHwBaseCounterTimer));
 }
 
 /********************************************************************
@@ -72,8 +69,8 @@ __NAKED__ void SyborgInterrupt::MsTimerTick(TAny* /*aPtr*/)
 __NAKED__ void SyborgInterrupt::IrqDispatch()
 {
 	asm("push {r4,r5,lr} ");
-	asm("ldr r4, __KHwBaseSic");
-	asm("ldr r12, __SicHandlerStart");
+	asm("ldr r4, =KHwBaseSic");
+	asm("ldr r12, =Handlers");
 	asm("ldr r5, [r4, #8]");  // r5 - pending interrupt
 	asm("adr lr, Clear");
 	asm("add r12, r5, lsl #3");
@@ -83,10 +80,6 @@ __NAKED__ void SyborgInterrupt::IrqDispatch()
 	//	asm("str r5, [r4, #16]");        // TODO: error
 	asm("pop {r4,r5,pc}");
 
-	asm("__KHwBaseSic:");
-	asm(".word %a0" : : "i" ((TInt)KHwBaseSic));
-	asm("__SicHandlerStart:");
-	asm(".word %a0" : : "i" ((TInt)&Handlers[0]));
 }
 
 __NAKED__ void SyborgInterrupt::FiqDispatch()
