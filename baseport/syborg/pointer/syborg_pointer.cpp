@@ -108,10 +108,14 @@ void TPointerRv::Init3()
 
   iScreenWidth  = videoInfo.iSizeInPixels.iWidth;
   iScreenHeight = videoInfo.iSizeInPixels.iHeight;
+  Kern::Printf("TPointerRv::Init3(): width: %d height: %d", iScreenWidth, iScreenHeight);
+
   iDisplayMode  = videoInfo.iDisplayMode;
+
 
   iVideoMem = videoInfo.iVideoAddress + videoInfo.iOffsetToFirstPixel;
   iOffSetBetweenEachLine = iScreenWidth;
+  Kern::Printf("TPointerRv::Init3(): iOffsetToFirstPixel: %d", iVideoMem);
 
   ix = iy = 0;
 
@@ -198,11 +202,18 @@ void TPointerRv::DisplayPointer()
 TUint32 *pMem =0;
 TInt k=0;
 
+	TLinAddr activeFrameLin = ReadReg( KHwBaseClcd, 14 /*FB_VBASE*/ ); 
+	Kern::Printf("activeFrameLin: 0x%08x", activeFrameLin);
+	if( activeFrameLin == 0 )
+		{
+		return;
+		}
+
 	if(!iFirstTime)
 	{
 
 	//restore old pointer position
-	pMem = (TUint32 *)iVideoMem;
+	pMem = (TUint32 *)(activeFrameLin + iVideoMem);
 
 	pMem+= iYtop* iOffSetBetweenEachLine;
 	pMem+= iXleft;
@@ -246,7 +257,7 @@ TInt k=0;
 	if(iYbottom> iScreenHeight)
 		iYbottom=iScreenHeight;
 
-	pMem = (TUint32 *)iVideoMem;
+	pMem = (TUint32 *)(activeFrameLin + iVideoMem);
 	k=0;
 
 	pMem+= iYtop* iOffSetBetweenEachLine;
