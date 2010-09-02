@@ -22,7 +22,7 @@
 KHwRamBaseAddr		EQU    0x00000000
 
 ; More ram required to boot SF image
-KHwRamSizeMb            EQU    128			; 128MB
+KHwRamSizeMb            EQU    512			; 512MB
 ;KHwRamSizeMb            EQU    256			; 256MB
 
 
@@ -52,8 +52,9 @@ KHwBaseNet		EQU     KHwBaseRegisters + 0x0c000
 KHwBaseNand		EQU     KHwBaseRegisters + 0x0d000
 KHwBaseAudio		EQU     KHwBaseRegisters + 0x0e000
 KHwBaseWebcamera	EQU     KHwBaseRegisters + 0x0f000
-KHwBasePlatform		EQU     KHwBaseRegisters + 0x10000
-KHwGraphicsRegBase	EQU	KHwBaseRegisters + 0x11000
+KHwNVMemoryDevice			EQU		KHwBaseRegisters + 0x10000
+KHwGraphicsRegBase		EQU  KHwBaseRegisters + 0x011000
+KHwBasePlatform		EQU     KHwBaseRegisters + 0x12000
 
 ;-----------------------------------------------------------------------------
 ; Module linear bases
@@ -80,7 +81,8 @@ KHwLinBaseNet		EQU	KHwLinBaseRegisters + 0x0c*KHwLinSeparation
 KHwLinBaseNand		EQU	KHwLinBaseRegisters + 0x0d*KHwLinSeparation
 KHwLinBaseAudio		EQU	KHwLinBaseRegisters + 0x0e*KHwLinSeparation
 KHwLinBaseWebcameraDevice	EQU	KHwLinBaseRegisters + 0x0f*KHwLinSeparation
-KHwLinBasePlatform	EQU	KHwLinBaseRegisters + 0x10*KHwLinSeparation;
-KHwLinBaseGraphics	EQU	KHwLinBaseRegisters + 0x11*KHwLinSeparation;
+KHwLinBaseNVMemory	EQU	KHwLinBaseRegisters + 0x10*KHwLinSeparation
+KHwLinBaseGraphics	EQU	KHwLinBaseRegisters + 0x11*KHwLinSeparation
+KHwLinBasePlatform	EQU	KHwLinBaseRegisters + 0x12*KHwLinSeparation
 	
 	END

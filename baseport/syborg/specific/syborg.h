@@ -53,7 +53,9 @@ const TUint KHwSVPNetDevice			= KHwBasePeripherals + 0x0c*KHwLinSeparation;
 const TUint KHwSVPNandDevice			= KHwBasePeripherals + 0x0d*KHwLinSeparation;
 const TUint KHwSVPAudioDevice			= KHwBasePeripherals + 0x0e*KHwLinSeparation;
 const TUint KHwSVPWebcameraDevice		= KHwBasePeripherals + 0x0f*KHwLinSeparation;
-const TUint KHwSVPPlatformDevice		= KHwBasePeripherals + 0x10*KHwLinSeparation;
+const TUint KHwNVMemoryDevice           = KHwBasePeripherals + 0x10*KHwLinSeparation;
+const TUint KHwGraphicsRegBase          = KHwBasePeripherals + 0x11*KHwLinSeparation;
+const TUint KHwSVPPlatformDevice        = KHwBasePeripherals + 0x12*KHwLinSeparation;
 	
 enum TSyborgInterruptId
 {
@@ -68,7 +70,9 @@ enum TSyborgInterruptId
   EIntSerial2 = 7,
   EIntSerial3 = 8,
   EIntNet0 = 9,
-  EIntAudio0 = 10
+  EIntAudio0 = 10,
+  EIntNVMemoryDevice = 12,
+  EIntGraphics = 13
 };
 
 // Timer Mode
