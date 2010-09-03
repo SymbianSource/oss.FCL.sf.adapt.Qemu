@@ -1,7 +1,26 @@
+#
+# Copyright (c) 2010 Nokia Corporation and/or its subsidiary(-ies).
+# All rights reserved.
+# This component and the accompanying materials are made available
+# under the terms of "Eclipse Public License v1.0"
+# which accompanies this distribution, and is available
+# at the URL "http://www.eclipse.org/legal/epl-v10.html".
+#
+# Initial Contributors:
+# Nokia Corporation - initial contribution.
+#
+# Contributors:
+#
+# Description: syborg_graphicsdevice.py
+#
+# Represents a graphics device register interface for quest OS in QEMU Syborg environment.
+#
+#
+
 import ctypes
 import qemu
 import sys
-#import SyborgModule
+import platform
 
 class syborg_graphicsdevice(qemu.devclass):
     # Graphics device registers derived from VirtualVideoInterfaceConstants.h
@@ -26,40 +45,39 @@ class syborg_graphicsdevice(qemu.devclass):
     shared_framebuffer_memory_base          = 0
     m_request_id_reg = 0
 
-    # Memory base id's from SyborgModule.h
-    # SYBORG_CMDMEMBASE = 0
-    # SYBORG_FRAMEBUFFERMEMBASE = 1
-    
-    class DllLoadExeption( Exception ):
-        def __init__(self,value):
-            self.value = value
-        
-        def __str__(self):
-            return repr(self.value)
-
-    class SyborgGraphicsWrapper():
-        def __init__(self):
-            try:
-                self.library = ctypes.CDLL("syborg-graphicswrapper.dll")
-            except:
-                raise syborg_graphicsdevice.DllLoadExeption(1)
-            self.obj = self.library.create_SyborgGraphicsWrapper()
-
-        def initialize_graphics_utils(self):
-            self.library.initialize_SyborgGraphicsWrapper( self.obj )
+    host_os                             = platform.system()
+    # List of operating systems for this device
+    OS_WINDOWS                          = "Windows"
+    OS_LINUX                            = "Linux"
 
     def create(self):
+        print "syborg_graphicsdevice: running on ", self.host_os
+        
+        # Add the supported and validated operating systems to the condition below
+        if( (self.host_os != self.OS_WINDOWS) ):
+            error_msg = "syborg_graphicsdevice: os support not validated: ", self.host_os
+            sys.exit( error_msg )
+
+        # Try open the syborg graphicswrapper library
         try:
-            self.graphicsutils = self.SyborgGraphicsWrapper()
-        except syborg_graphicsdevice.DllLoadExeption:
-            #print "syborg_graphicsdevice: Graphics dll load failed"
-            sys.exit("syborg_graphicsdevice: Graphics dll load failed")
+            if( self.host_os == self.OS_WINDOWS ):
+                libname = "syborg-graphicswrapper.dll"
+            elif( self.host_os == self.OS_LINUX ):
+                libname = "syborg-graphicswrapper.so"
+            else:
+                # We should never end up here since the operating system check is done above
+                sys.exit( "syborg_graphicsdevice: library loading failed. Os not supported!" )
+            self.library = ctypes.CDLL(libname)
+        except Exception, e:
+            print repr(e)
+            error_msg = "syborg_graphicsdevice: " + libname + " load failed";
+            sys.exit( error_msg )
+
+        # Create an instance of syborg graphics wrapper
+        self.obj = self.library.create_SyborgGraphicsWrapper()
             
-            
-        self.graphicsutils.initialize_graphics_utils()
+        self.library.initialize_SyborgGraphicsWrapper( self.obj )
         self.initialize_graphics_callback()
-        # deliver the graphics ram region
-        # self.gmembase = self.graphicsutils.library.get_membase()
 
         self.irqenable = 0
         self.irqstatus = 0
@@ -78,7 +96,7 @@ class syborg_graphicsdevice(qemu.devclass):
     def initialize_graphics_callback(self):
         self.CALLBACKFUNC = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int)
         self.graphics_callback = self.CALLBACKFUNC(self.graphics_request_callback)
-        self.graphicsutils.library.set_GraphicsCallBack( self.graphicsutils.obj, self.graphics_callback )
+        self.library.set_GraphicsCallBack( self.obj, self.graphics_callback )
             
     def read_reg(self, offset):
         offset >>= 2
@@ -96,15 +114,15 @@ class syborg_graphicsdevice(qemu.devclass):
             self.lasterror = 0
             return self.lasterror
         elif offset == self.VVI_R_INPUT_BUFFER_TAIL:
-            return self.graphicsutils.library.get_InputBufferTail( self.graphicsutils.obj )
+            return self.library.get_InputBufferTail( self.obj )
         elif offset == self.VVI_R_INPUT_BUFFER_HEAD:
-            return self.graphicsutils.library.get_InputBufferHead( self.graphicsutils.obj )
+            return self.library.get_InputBufferHead( self.obj )
         elif offset == self.VVI_R_INPUT_BUFFER_READ_COUNT:
-            return self.graphicsutils.library.get_InputBufferReadCount( self.graphicsutils.obj )
+            return self.library.get_InputBufferReadCount( self.obj )
         elif offset == self.VVI_R_INPUT_BUFFER_WRITE_COUNT:
-            return self.graphicsutils.library.get_InputBufferWriteCount( self.graphicsutils.obj )
+            return self.library.get_InputBufferWriteCount( self.obj )
         elif offset == self.VVI_R_INPUT_BUFFER_MAX_TAIL:
-            return self.graphicsutils.library.get_InputMaxTailIndex( self.graphicsutils.obj )
+            return self.library.get_InputMaxTailIndex( self.obj )
         elif offset == self.VVI_R_REQUEST_ID:
             return self.m_request_id_reg
         elif offset == self.VVI_R_SHARED_CMD_MEMORY_BASE:
@@ -119,35 +137,33 @@ class syborg_graphicsdevice(qemu.devclass):
         offset >>= 2
         if offset == self.VVI_R_IRQ_STATUS:
             self.updateIrq(0);
-            self.graphicsutils.library.signal_outputbuffer_semafore( self.graphicsutils.obj )
-            self.graphicsutils.library.execute_command( self.graphicsutils.obj );
+            self.library.signal_outputbuffer_semafore( self.obj )
+            self.library.execute_command( self.obj );
         elif offset == self.VVI_R_COMMAND:
             if value == self.VVI_EXECUTE:
-                self.graphicsutils.library.execute_command( self.graphicsutils.obj );
+                self.library.execute_command( self.obj );
             else:
                 sys.exit("syborg_graphicsdevice: Unknown command issued!")
         elif offset == self.VVI_R_INPUT_BUFFER_TAIL:
-            self.graphicsutils.library.set_InputBufferTail(  self.graphicsutils.obj, value );
+            self.library.set_InputBufferTail(  self.obj, value );
         elif offset == self.VVI_R_INPUT_BUFFER_HEAD:
-            self.graphicsutils.library.set_InputBufferHead( self.graphicsutils.obj, value );
+            self.library.set_InputBufferHead( self.obj, value );
         elif offset == self.VVI_R_INPUT_BUFFER_READ_COUNT:
-            self.graphicsutils.library.set_InputBufferReadCount( self.graphicsutils.obj, value );
+            self.library.set_InputBufferReadCount( self.obj, value );
         elif offset == self.VVI_R_INPUT_BUFFER_WRITE_COUNT:
-            self.graphicsutils.library.set_InputBufferWriteCount( self.graphicsutils.obj, value );
+            self.library.set_InputBufferWriteCount( self.obj, value );
         elif offset == self.VVI_R_INPUT_BUFFER_MAX_TAIL:
-            self.graphicsutils.library.set_InputMaxTailIndex( self.graphicsutils.obj, value );
+            self.library.set_InputMaxTailIndex( self.obj, value );
         elif offset == self.VVI_R_SHARED_CMD_MEMORY_BASE:
-            gmemsize = self.graphicsutils.library.get_cmd_memsize()
+            gmemsize = self.library.get_cmd_memsize()
             self.cmd_memregion = qemu.memregion( value, gmemsize )
             self.memregion_cmd_base = self.cmd_memregion.region_host_addr()
-            #SyborgModule.post_address( self.memregion_cmd_base, self.SYBORG_CMDMEMBASE )
         elif offset == self.VVI_R_SHARED_FRAMEBUFFER_MEMORY_BASE:
-            gmemsize = self.graphicsutils.library.get_framebuffer_memsize()
+            gmemsize = self.library.get_framebuffer_memsize()
             self.framebuffer_memregion = qemu.memregion( value, gmemsize )
             self.memregion_framebuffer_base = self.framebuffer_memregion.region_host_addr()
-            #SyborgModule.post_address( self.memregion_framebuffer_base, self.SYBORG_FRAMEBUFFERMEMBASE )
             # Ready to finalise graphics initialization
-            if( self.graphicsutils.library.reset_SyborgGraphicsWrapper( self.graphicsutils.obj, self.memregion_framebuffer_base, self.memregion_cmd_base ) != 0 ):
+            if( self.library.reset_SyborgGraphicsWrapper( self.obj, self.memregion_framebuffer_base, self.memregion_cmd_base ) != 0 ):
                 sys.exit("syborg_graphicsdevice: Syborg graphicsutils library not initialized correctly!")
         else:
             reg_write_error = "syborg_graphicsdevice: Illegal register write to: ", offset 
