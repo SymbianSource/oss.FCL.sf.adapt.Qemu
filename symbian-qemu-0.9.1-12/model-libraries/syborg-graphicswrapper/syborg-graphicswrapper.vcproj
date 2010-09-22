@@ -115,7 +115,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="$(SolutionDir)..\platsim_graphics\platsimvideodriver\commoninc;$(SolutionDir)..\PlatsimUtil\PlatsimUtil\inc\public;$(SolutionDir)..\KhronosAPIWrapper\inc;$(SolutionDir)..\platsim_graphics\serialiser\inc"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\..\..\..\adapt\graphics.simulator\hostsupport\hostthreadadapter\inc&quot;;&quot;$(SolutionDir)\..\..\..\..\..\os\graphics\graphics_plat\guestvideodriver_api\inc&quot;;&quot;$(SolutionDir)\..\..\..\..\..\adapt\graphics.simulator\holdingarea\serialization\Graphics\KhronosAPIWrapper\inc&quot;;&quot;$(SolutionDir)\..\..\..\..\..\adapt\graphics.simulator\guestrendering\vghwserialiser\inc&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;SYBORG_GRAPHICSWRAPPER_EXPORTS;WIN32_LEAN_AND_MEAN"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -133,9 +133,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="PlatsimUtil.lib KhronosApiWrapper.lib"
+				AdditionalDependencies="hostthreadadapter.lib KhronosApiWrapper.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)..\PlatsimUtil\PlatsimUtil\$(ConfigurationName);$(SolutionDir)..\KhronosAPIWrapper\$(ConfigurationName)"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)\..\..\..\..\..\adapt\graphics.simulator\holdingarea\lib&quot;"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>

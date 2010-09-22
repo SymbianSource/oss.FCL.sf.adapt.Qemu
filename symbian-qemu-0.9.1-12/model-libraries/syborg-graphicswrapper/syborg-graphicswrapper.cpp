@@ -5,7 +5,7 @@
 #include <guestvideodriverinterfaceconstants.h>  //Registers and enums 
 #include <platformthreading.h>  //mutex
 #include <graphicsvhwcallback.h>
-#include "syborggraphicswrapper.h"
+#include "syborg-graphicswrapper.h"
 
 SyborgGraphicsWrapper::SyborgGraphicsWrapper()
     {															
