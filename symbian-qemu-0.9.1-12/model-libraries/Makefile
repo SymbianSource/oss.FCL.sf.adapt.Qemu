@@ -14,7 +14,7 @@
 .phony: all clean install distclean
 
 # Append new model library dirs here.
-subdirs := syborg-graphicswrapper/
+subdirs := nvmemmory syborg-graphicswrapper
 
 all clean install distclean:
 	for d in $(subdirs); do $(MAKE) -C $$d $@; done
