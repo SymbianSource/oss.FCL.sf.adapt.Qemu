@@ -2,13 +2,13 @@
 
 #include "platformtypes.h"
 #include <KhronosAPIWrapper.h>
-#include <VirtualVideoInterfaceConstants.h>  //Registers and enums 
+#include <guestvideodriverinterfaceconstants.h>  //Registers and enums 
 #include <platformthreading.h>  //mutex
-#include <protocol_MGraphicsVHWCallback.h>
-#include "syborg-graphicswrapper.h"
+#include <graphicsvhwcallback.h>
+#include "syborggraphicswrapper.h"
 
 SyborgGraphicsWrapper::SyborgGraphicsWrapper()
-    {
+    {															
     }
 
 SyborgGraphicsWrapper::~SyborgGraphicsWrapper()
@@ -32,7 +32,7 @@ int SyborgGraphicsWrapper::Reset( uint32_t *aGraphicsMemBase,  uint32_t *aComman
     uint8_t *frame_buffer = (uint8_t *)aGraphicsMemBase;
     if( (cmd_buffer != NULL) && (frame_buffer != NULL) )
         {
-        m_wrapper = new KhronosAPIWrapper( (protocol_MGraphicsVHWCallback*)this,
+        m_wrapper = new KhronosAPIWrapper( (MGraphicsVHWCallback*)this,
             frame_buffer, &cmd_buffer[VVHW_INPUT_BASE], &cmd_buffer[VVHW_OUTPUT_BASE] );
         //Reset synchronisation mechanisms
         Psu::platform_release_semaphore(m_outputBufferSemaphore);
@@ -55,7 +55,7 @@ void SyborgGraphicsWrapper::LockOutputBuffer()
 
 void SyborgGraphicsWrapper::ReleaseOutputBuffer(){}
 
-void SyborgGraphicsWrapper::ProsessingDone(int i)
+void SyborgGraphicsWrapper::ProcessingDone(int i)
     {
     m_pythonCallBack( i );
     }

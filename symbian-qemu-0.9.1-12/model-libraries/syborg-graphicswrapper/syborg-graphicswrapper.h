@@ -2,7 +2,7 @@
 #define _SYBORG_GRAPHICSWRAPPER_H
 
 #pragma once
-
+					  
 #ifdef WIN32
 #ifdef SYBORG_GRAPHICSWRAPPER_EXPORTS
 #define SYBORG_GRAPHICSWRAPPER_API __declspec(dllexport)
@@ -16,7 +16,7 @@
 Psu::PLATFORM_SEMAPHORE_T m_outputBufferSemaphore;
 int (*m_pythonCallBack)(int); 
 KhronosAPIWrapper* m_wrapper;
-
+														   
 
 // Derived from GraphicsVirtualHW.lisa
 static const int VVHW_BUFFER (0x3000000);
@@ -27,7 +27,7 @@ static const int VVHW_OUTPUT_BASE(0x1000000);
 static const int VVHW_FRAME_BUFFER (0x1000000);
 static const int VVHW_FRAME_BASE(0x2000000);
 
-class SyborgGraphicsWrapper : public protocol_MGraphicsVHWCallback
+class SyborgGraphicsWrapper : public MGraphicsVHWCallback
     {
     public:
 
@@ -38,7 +38,7 @@ class SyborgGraphicsWrapper : public protocol_MGraphicsVHWCallback
 
         virtual void LockOutputBuffer();
 	    virtual void ReleaseOutputBuffer();
-	    virtual void ProsessingDone(int i);
+	    virtual void ProcessingDone(int i);
 
     private:
     };
