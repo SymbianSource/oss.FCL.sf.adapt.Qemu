@@ -66,7 +66,7 @@ extension[VARID]=	KERNEL_DIR\DEBUG_DIR\kdebug.dll			        \sys\bin\kdebug.dll
 #endif
 
 // IEEE-mode VFP support
-extension[VARID]=	KERNEL_DIR\DEBUG_DIR\evfp.dll			        \sys\bin\evfp.dll
+//extension[VARID]=	KERNEL_DIR\DEBUG_DIR\evfp.dll			        \sys\bin\evfp.dll
 
 
 // Either include NGA or Non NGA Framebuffer
@@ -103,6 +103,12 @@ extension[VARID]=	KERNEL_DIR\DEBUG_DIR\_PLATFORM_NAME_ekeyb.dll		\sys\bin\ekeyb.
 
 //device[VARID]	=KERNEL_DIR\DEBUG_DIR\pipelib.ldd					    \sys\bin\pipelib.ldd
 
+/* Generic nonvolatile memory */
+extension[VARID]=	KERNEL_DIR\DEBUG_DIR\_PLATFORM_NAME_mednvmemory.pdd		\sys\bin\mednvmemory.pdd
+
+/* Ethernet drivers */
+device[VARID]=KERNEL_DIR\DEBUG_DIR\_PLATFORM_NAME_ethernet.pdd		\sys\bin\ethernet.pdd
+device[VARID]=KERNEL_DIR\DEBUG_DIR\enet.ldd							\sys\bin\enet.ldd
 
 // Host Filesystem
 extension[VARID]=	KERNEL_DIR\DEBUG_DIR\_PLATFORM_NAME_svphostfsdriver.ldd sys\bin\svphostfsdriver.ldd

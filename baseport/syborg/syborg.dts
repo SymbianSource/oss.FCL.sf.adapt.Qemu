@@ -130,15 +130,22 @@
             interrupts = <c>;
             interrupt-parent = <&intc>;
         };
-	    graphicsdevice@0 {
+        graphicsdevice@0 {
             compatible = "syborg,graphicsdevice";
             reg = <c0011000>;
             interrupts = <d>;
             interrupt-parent = <&intc>;
         };
+        timer@1 {
+            compatible = "syborg,timer";
+            reg = <c0012000>;
+            frequency = <d#0100000>;
+            interrupts = <e>;
+            interrupt-parent = <&intc>;
+        };
         platform@0 {
             compatible = "syborg,platform";
-            reg = <c0012000>;
+            reg = <c0013000>;
         };
     };
 };

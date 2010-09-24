@@ -10,6 +10,7 @@
 ;* Nokia Corporation - initial contribution.
 ;*
 ;* Contributors:
+;* NTT DOCOMO, INC - Fix for bug 1291 "E32test t_tock.exe failed to load Logical Device"
 ;*
 ;* Description:
 ;*
@@ -185,6 +186,8 @@ GetHwBanks	ROUT
 		HW_MAPPING		KHwBaseWebcamera,    		1,	HW_MULT_4K
 		HW_MAPPING		KHwNVMemoryDevice,		1,	HW_MULT_4K
                 HW_MAPPING              KHwGraphicsRegBase,             1,      HW_MULT_4K
+		HW_MAPPING		KHwBaseTimer2,			1,	HW_MULT_4K
+; NTT Docomo - Defect 1291 fix - E32test t_tock.exe failed to load Logical Device - end
 		HW_MAPPING		KHwBasePlatform,    		8,	HW_MULT_4K
 	
 		DCD     0   ; terminator
@@ -484,7 +487,7 @@ InitDebugPort	ROUT
 GetDebugPortBase	ROUT
 		ldr		r1, [r12, #TRomHeader_iDebugPort]
 		cmp		r1, #42							; JTAG?
-		movseq	r1, #0
+		moveqs	r1, #0
 		bxeq	lr							    ; yes - return 0 and set Z
 		cmp		r1, #1
         blo     GetUartPort0          

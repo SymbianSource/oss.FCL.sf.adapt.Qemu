@@ -10,7 +10,9 @@
 * Nokia Corporation - initial contribution.
 *
 * Contributors:
-* NTT Docomo, Inc : BUG 1296
+* NTT DOCOMO, INC : BUG 1296
+* NTT DOCOMO, INC : BUG 3598
+* NTT DOCOMO, INC - Fix for bug 1291 "E32test t_tock.exe failed to load Logical Device"
 *
 * Description:
 *
@@ -53,9 +55,11 @@ const TUint KHwSVPNetDevice			= KHwBasePeripherals + 0x0c*KHwLinSeparation;
 const TUint KHwSVPNandDevice			= KHwBasePeripherals + 0x0d*KHwLinSeparation;
 const TUint KHwSVPAudioDevice			= KHwBasePeripherals + 0x0e*KHwLinSeparation;
 const TUint KHwSVPWebcameraDevice		= KHwBasePeripherals + 0x0f*KHwLinSeparation;
-const TUint KHwNVMemoryDevice           = KHwBasePeripherals + 0x10*KHwLinSeparation;
-const TUint KHwGraphicsRegBase          = KHwBasePeripherals + 0x11*KHwLinSeparation;
-const TUint KHwSVPPlatformDevice        = KHwBasePeripherals + 0x12*KHwLinSeparation;
+const TUint KHwNVMemoryDevice           	= KHwBasePeripherals + 0x10*KHwLinSeparation;
+const TUint KHwGraphicsRegBase          	= KHwBasePeripherals + 0x11*KHwLinSeparation;
+const TUint KHwBaseCounterTimer2		= KHwBasePeripherals + 0x12*KHwLinSeparation;
+const TUint KHwSVPPlatformDevice		= KHwBasePeripherals + 0x13*KHwLinSeparation;
+// NTT Docomo - Defect 1291 fix - E32test t_tock.exe failed to load Logical Device - end
 	
 enum TSyborgInterruptId
 {
@@ -72,7 +76,9 @@ enum TSyborgInterruptId
   EIntNet0 = 9,
   EIntAudio0 = 10,
   EIntNVMemoryDevice = 12,
-  EIntGraphics = 13
+  EIntGraphics = 13,
+  EIntTimer2 = 14
+// NTT Docomo - Defect 1291 fix - E32test t_tock.exe failed to load Logical Device - end
 };
 
 // Timer Mode
@@ -127,12 +133,12 @@ public:
 	IMPORT_C static void MarkDebugPortOff();
 };
 
-static inline TUint32 ReadReg(TUint32 base, TUint8 aReg)
+static inline TUint32 ReadReg(TUint32 base, TUint32 aReg)
 {
   return *(volatile TUint32 *)(base + (aReg << 2));
 }
 
-static inline void WriteReg(TUint32 base, TUint8 aReg, TUint32 aVal)
+static inline void WriteReg(TUint32 base, TUint32 aReg, TUint32 aVal)
 {
   *(volatile TUint32*)(base + (aReg<<2)) = aVal;
 }

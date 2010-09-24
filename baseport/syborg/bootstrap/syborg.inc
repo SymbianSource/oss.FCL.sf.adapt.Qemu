@@ -10,6 +10,7 @@
 ;* Nokia Corporation - initial contribution.
 ;*
 ;* Contributors:
+;* NTT DOCOMO, INC - Fix for bug 1291 "E32test t_tock.exe failed to load Logical Device"
 ;*
 ;* Description:
 ;*
@@ -52,9 +53,11 @@ KHwBaseNet		EQU     KHwBaseRegisters + 0x0c000
 KHwBaseNand		EQU     KHwBaseRegisters + 0x0d000
 KHwBaseAudio		EQU     KHwBaseRegisters + 0x0e000
 KHwBaseWebcamera	EQU     KHwBaseRegisters + 0x0f000
-KHwNVMemoryDevice			EQU		KHwBaseRegisters + 0x10000
-KHwGraphicsRegBase		EQU  KHwBaseRegisters + 0x011000
-KHwBasePlatform		EQU     KHwBaseRegisters + 0x12000
+KHwNVMemoryDevice	EQU	KHwBaseRegisters + 0x10000
+KHwGraphicsRegBase	EQU	KHwBaseRegisters + 0x11000
+KHwBaseTimer2		EQU	KHwBaseRegisters + 0x12000
+KHwBasePlatform		EQU     KHwBaseRegisters + 0x13000
+; NTT Docomo - Defect 1291 fix - E32test t_tock.exe failed to load Logical Device - end
 
 ;-----------------------------------------------------------------------------
 ; Module linear bases
@@ -83,6 +86,8 @@ KHwLinBaseAudio		EQU	KHwLinBaseRegisters + 0x0e*KHwLinSeparation
 KHwLinBaseWebcameraDevice	EQU	KHwLinBaseRegisters + 0x0f*KHwLinSeparation
 KHwLinBaseNVMemory	EQU	KHwLinBaseRegisters + 0x10*KHwLinSeparation
 KHwLinBaseGraphics	EQU	KHwLinBaseRegisters + 0x11*KHwLinSeparation
-KHwLinBasePlatform	EQU	KHwLinBaseRegisters + 0x12*KHwLinSeparation
+KHwLinBaseTimer2		EQU	KHwLinBaseRegisters + 0x12*KHwLinSeparation
+KHwLinBasePlatform	EQU	KHwLinBaseRegisters + 0x13*KHwLinSeparation
+; NTT Docomo - Defect 1291 fix - E32test t_tock.exe failed to load Logical Device - end
 	
 	END
