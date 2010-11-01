@@ -58,7 +58,7 @@ GLDEF_C void DisplayLogoL(CConsoleBase* aConsole)
 	//Open file 
 	
 	/*
-	File \sf\adaptation\qemu\baseport\syborg\syborg.dts contains board model description, the hostfs@0 block defines both the host path
+	File \sf\adapt\qemu\baseport\syborg\syborg.dts contains board model description, the hostfs@0 block defines both the host path
 	and target drive. The hostpath is by default set to \svphostfs\ and default drive number is 19 (S:\). If you would like to change this 
 	edit the dts file and use arm-none-symbianelf-dtc.exe to create updated dtb file
 	*/

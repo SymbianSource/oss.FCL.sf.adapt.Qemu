@@ -14,7 +14,7 @@ Submitter - Johnathan.White@accenture.com
 
 Purpose - Simple TextShell console application which reads image file from filesystem and outputs to display
 
-Build from -  \sf\adaptation\qemu\applications\SymbianLogo_TextShell
+Build from -  \sf\adapt\qemu\applications\SymbianLogo_TextShell
 
 Using command - sbs -b bld.inf -c armv5 -j 1
 
@@ -26,5 +26,5 @@ Then Build textshell rom from \sf\os\kernelhwsrv\kernel\eka\rombuild\ using comm
 
 Then run QEMU from \symbian-qemu-0.9.1\bin using command -
 
-arm-none-symbianelf-qemu-system.exe -kernel \sf\os\kernelhwsrv\kernel\eka\rombuild\syborgarmv5d.img -M \sf\adaptation\qemu\baseport\syborg\syborg.dtb
+arm-none-symbianelf-qemu-system.exe -kernel \sf\os\kernelhwsrv\kernel\eka\rombuild\syborgarmv5d.img -M \sf\adapt\qemu\baseport\syborg\syborg.dtb
 
