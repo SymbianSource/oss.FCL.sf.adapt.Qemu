@@ -61,9 +61,9 @@ class syborg_graphicsdevice(qemu.devclass):
         # Try open the syborg graphicswrapper library
         try:
             if( self.host_os == self.OS_WINDOWS ):
-                libname = "syborg-graphicswrapper.dll"
+                libname = "KhronosAPIWrapper.dll"
             elif( self.host_os == self.OS_LINUX ):
-                libname = "syborg-graphicswrapper.so"
+                libname = "KhronosAPIWrapper.so"
             else:
                 # We should never end up here since the operating system check is done above
                 sys.exit( "syborg_graphicsdevice: library loading failed. Os not supported!" )
@@ -74,9 +74,9 @@ class syborg_graphicsdevice(qemu.devclass):
             sys.exit( error_msg )
 
         # Create an instance of syborg graphics wrapper
-        self.obj = self.library.create_SyborgGraphicsWrapper()
+        self.obj = self.library.create_SimulatorGraphicsWrapper()
             
-        self.library.initialize_SyborgGraphicsWrapper( self.obj )
+        self.library.initialize_SimulatorGraphicsWrapper( self.obj )
         self.initialize_graphics_callback()
 
         self.irqenable = 0
@@ -163,7 +163,7 @@ class syborg_graphicsdevice(qemu.devclass):
             self.framebuffer_memregion = qemu.memregion( value, gmemsize )
             self.memregion_framebuffer_base = self.framebuffer_memregion.region_host_addr()
             # Ready to finalise graphics initialization
-            if( self.library.reset_SyborgGraphicsWrapper( self.obj, self.memregion_framebuffer_base, self.memregion_cmd_base ) != 0 ):
+            if( self.library.reset_SimulatorGraphicsWrapper( self.obj, self.memregion_framebuffer_base, self.memregion_cmd_base ) != 0 ):
                 sys.exit("syborg_graphicsdevice: Syborg graphicsutils library not initialized correctly!")
         else:
             reg_write_error = "syborg_graphicsdevice: Illegal register write to: ", offset 
