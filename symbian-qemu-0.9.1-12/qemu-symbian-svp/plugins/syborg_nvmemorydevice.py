@@ -202,9 +202,9 @@ class syborg_nvmemorydevice(qemu.devclass):
                 sys.exit( error_msg )
             else:
                 if( self.transaction_direction == self.NVMEM_TRANSACTION_READ ):
-                    self.nvmemlib.nvmem_read(  self.obj, self.nvmemory_sharedmemory_host_address, self.nvmemhandle, self.transaction_offset, self.transaction_size )
+                    self.nvmemlib.nvmem_read(  self.obj, ctypes.c_void_p(self.nvmemory_sharedmemory_host_address), self.nvmemhandle, self.transaction_offset, self.transaction_size )
                 elif( self.transaction_direction == self.NVMEM_TRANSACTION_WRITE ):
-                    self.nvmemlib.nvmem_write(  self.obj, self.nvmemory_sharedmemory_host_address, self.nvmemhandle, self.transaction_offset, self.transaction_size )
+                    self.nvmemlib.nvmem_write(  self.obj, ctypes.c_void_p(self.nvmemory_sharedmemory_host_address), self.nvmemhandle, self.transaction_offset, self.transaction_size )
                 else:
                     error_msg = "syborg_nvmemorydevice: Transaction direction not set!" 
                     sys.exit( error_msg )

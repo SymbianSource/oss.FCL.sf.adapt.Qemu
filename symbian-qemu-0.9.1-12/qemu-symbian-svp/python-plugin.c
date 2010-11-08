@@ -158,7 +158,7 @@ static int qemu_py_memregion_init(qemu_py_memregion *self, PyObject *args,
 	int ret = -1;
 	int region_index = 0;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "ll", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "ii", kwlist,
                                      &base, &size ))
 		{
         ret = -1; 
