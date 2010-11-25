@@ -136,12 +136,6 @@ end
 // Build image armv5 for urel and udeb
 PRJ_EXTENSIONS
 start	extension	base/rom
-#ifdef ARMCC
-option ROM_DEFS ARMCC
-#endif
-#ifdef GCCE
-option ROM_DEFS GCCE
-#endif
 option	REE_TARGET	syborg
 option	TYPE	tshell
 end
